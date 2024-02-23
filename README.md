@@ -29,7 +29,7 @@ Angular is a powerful framework for building modern single-page applications (SP
 
 ## Angular Architecture
 
-![overview2.png](..%2F..%2FDesktop%2Fangular%2Foverview2.png)
+![overview2](https://github.com/baderbenlhachemi/angular-demo/assets/88034249/623d9732-9f91-48b1-925b-a8781970ef50)
 
 ### 1. Component:
 
