@@ -6,8 +6,6 @@ You write Angular applications by composing HTML templates with Angularized mark
 
 Then you launch the app by bootstrapping the root module. Angular takes over, presenting your application content in a browser and responding to user interactions according to the instructions you've provided.
 
----
-
 ## Key Features:
 
 - **Component-Based Framework:**
@@ -158,6 +156,8 @@ In the Component-Based Architecture:
 - Adheres to MVVM principles (Model-View-ViewModel), providing a structured way to manage and separate concerns in the application.
 
 ## Data Binding in Angular:
+
+![databinding](https://github.com/baderbenlhachemi/angular-demo/assets/88034249/ad716809-0dad-4858-a0e5-2dc7cfb8f5c7)
 
 Data binding in Angular enables synchronization between the model (data) and the view (UI), creating a dynamic and responsive user interface.
 
