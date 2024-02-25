@@ -20,14 +20,6 @@ Then you launch the app by bootstrapping the root module. Angular takes over, pr
 - **Supports Responsive Web Design and Modern Frameworks:**
   Angular provides out-of-the-box support for responsive web design and integrates seamlessly with popular frameworks like Bootstrap and Angular Material.
 
-## Benefits of Using Angular:
-
-- **Clean Structure:**
-  Angular helps organize your application into a well-defined structure, making it easier to understand and maintain.
-
-- **Reusable Code:**
-  The component-based architecture of Angular encourages the creation of reusable code components, reducing redundancy and improving development efficiency.
-
 - **Testability:**
   Angular's architecture, with its clean separation of concerns, facilitates unit testing, making it easier to ensure the reliability of your application.
 
@@ -49,11 +41,30 @@ Every Angular app has at least one Angular module class, the root module, conven
 
 - **exports:** the subset of declarations that should be visible and usable in the component templates of other modules.
 
-- **imports:** other modules whose exported classes are needed by component templates declared in this module.
+- **imports:** the external modules that are required by the components in the module.
 
 - **providers:** creators of services that this module contributes to the global collection of services; they become accessible in all parts of the app.
 
--**bootstrap:** the main application view, called the root component, that hosts all other app views. Only the root module should set this `bootstrap` property.
+- **bootstrap:** the main application view, called the root component, that hosts all other app views. Only the root module should set this `bootstrap` property.
+
+```typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
 ### 2. Component:
 
@@ -61,13 +72,11 @@ Main player in an Angular application. Has two parts:
 1. View for user interface
 2. Class that contains application logic (what is does to support the view) / event handling for the view
 
-The class interacts with the view through an API of properties and methods.
-
-It serves as the orchestrator of communication between the Model and the View.
+It serves as the orchestrator of communication between the Model (application data) and the View.
 
 In Angular, components are pivotal for managing the UI and application logic, handling user input, updating the model, and dynamically refreshing the view based on changes in the model.
 
-The @Component decorator takes a required configuration object with the information Angular needs to create and present the component and its view.
+The `@Component` decorator takes a required configuration object with the information Angular needs to create and present the component and its view.
 
 Here are a few of the most useful @Component configuration options:
 
@@ -87,6 +96,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+
+  // Example of a constructor with a service injection
+  constructor(private exampleService: ExampleService) {}
 }
 ```
 
@@ -106,7 +118,7 @@ Provides additional information about the component, such as its selector, templ
 
 ### 5. Data Binding:
 
-A mechanism for coordinating the parts of a template with the parts of a component.
+A mechanism for coordinating (synchronizing) the parts of a template with the parts of a component.
 
 Facilitates the synchronization of data between the model (application data) and the view (UI), enabling automatic updates to the view based on changes in the model.
 
@@ -124,7 +136,7 @@ Angular provides built-in directives such as ngFor, ngIf, and ngSwitch, as well 
 - **ngIf:** A structural directive that conditionally includes a portion of HTML based on the evaluation of an expression.
 - **ngSwitch:** A structural directive that conditionally switches among multiple views based on the evaluation of an expression.
 - **ngClass:** A directive that dynamically adds or removes CSS classes based on the evaluation of an expression.
-- 
+
 ```html
 <!-- Example usage of ngFor in the template -->
 <ul>
@@ -159,11 +171,42 @@ A design pattern used to manage the dependencies of an application, allowing the
 
 Dependency injection is a way to supply a new instance of a class with the fully-formed dependencies it requires. Most dependencies are services. Angular uses dependency injection to provide new components with the services they need.
 
-### 9. Router:
+### 9. Routing in Angular:
 
 Facilitates navigation between different views or pages in a single-page application (SPA).
 
-Angular's built-in router module provides a way to define routes and associate them with specific components, enabling seamless navigation between different parts of the application.
+The `RouterModule` is used to configure the routes of the application, associating components with specific URLs. and the `RouterOutlet` directive is used to define the location where the routed components will be displayed.
+
+```typescript
+// Example app-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { AppComponent } from './app.component';
+
+const routes: Routes = [
+  { path: '', component: AppComponent },
+  // Add other routes as needed
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+```
+
+You then need to import `AppRoutingModule` in your `AppModule` to enable the routing features in your application.
+
+```html
+<!-- Example usage of RouterLink in the template -->
+<a routerLink="/about">About</a>
+
+<!-- Example usage of RouterOutlet in the template -->
+<router-outlet></router-outlet>
+```
+
+The `routerLink` directive is used to define links to different routes, and the `router-outlet` directive is used to define the location where the routed components will be displayed.
 
 ### 10. Pipes:
 
@@ -310,173 +353,11 @@ Data binding in Angular enables synchronization between the model (data) and the
 - The `templateUrl` property in the `@Component` decorator points to the HTML file containing the template for the component.
 - When the Angular application runs, it replaces the `<app-root>` tag in the HTML with the content specified in the associated template file.
 
-## Angular Files:
-
-In an Angular application, several key files play vital roles in organizing and configuring the application.
-
-### app.component.ts
-
-This file defines the root component of the Angular application. It is typically located in the `src/app` directory. The component is annotated with the `@Component` decorator, which includes metadata like the selector, templateUrl, styleUrls, etc. The content of this file defines the structure and behavior of the root component, which is usually represented by the `<app-root>` tag in the HTML.
-
-```typescript
-// Example app.component.ts
-import {Component} from '@angular/core';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
-})
-export class AppComponent {
-  // Component logic goes here
-
-  // Example of a constructor with a service injection
-  constructor(private exampleService: ExampleService) {}
-}
-```
-
-### app.module.ts
-
-This file defines the main module of the Angular application. It is typically located in the `src/app` directory. The module is annotated with the `@NgModule` decorator, which includes metadata about the module, such as declarations, imports, providers, etc. It imports other modules and declares components, directives, and pipes that are part of the application.
-
-```typescript
-// Example app.module.ts
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-```
-
-### app-routing.module.ts
-
-This file is used for configuring the application's routing functionality. It is typically located in the `src/app` directory. It defines the routes of the application, associating components with specific URLs. The `RouterModule` is configured with these routes.
-
-```typescript
-// Example app-routing.module.ts
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-
-import { AppComponent } from './app.component';
-
-const routes: Routes = [
-  { path: '', component: AppComponent },
-  // Add other routes as needed
-];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
-```
-
-You then need to import `AppRoutingModule` in your `AppModule` to enable the routing features in your application.
-
-These three files (`app.component.ts`, `app.module.ts`, and `app-routing.module.ts`) work together to define the structure, behavior, and routing of your Angular application.
-
-## Structural Directives: (*ngFor and *ngIf)
-
-Angular provides structural directives like *ngFor and *ngIf, which are used in templates to handle the structure of the DOM dynamically. *ngFor is used for looping, while *ngIf is used for conditionals.
-
-## Services in Angular:
-
-Services in Angular are used to encapsulate functionality that is not specific to a particular component. They are used to share data and functionality across different parts of the application.
-
-Services are typically implemented as TypeScript classes and are decorated with the `@Injectable` decorator. They can be injected into components, directives, and other services using Angular's dependency injection system.
-
-Services are commonly used for tasks such as data retrieval and management from a server, performing calculations, or handling validation. They help keep the application's components lean and focused on the user interface, while the services handle the underlying logic and data management.
-
-```typescript
-// Example service in Angular
-import { Injectable } from '@angular/core';
-
-@Injectable({
-  providedIn: 'root'
-})
-
-export class DataService {
-  // Service logic goes here
-}
-```
-
-## Routing in Angular:
-
-Routing in Angular refers to the process of navigating between different views or pages in a single-page application (SPA). Angular's built-in router module provides a way to define routes and associate them with specific components.
-
-The `RouterModule` is used to configure the routes of the application, and the `RouterOutlet` directive is used to define the location where the routed components will be displayed.
-
-```typescript
-// Example routing configuration in Angular
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-
-import { HomeComponent } from './home.component';
-import { AboutComponent } from './about.component';
-
-const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'about', component: AboutComponent }
-  // Add other routes as needed
-];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
-```
-
-In the example above, the `RouterModule` is configured with the defined routes, and the `AppRoutingModule` is then imported into the `AppModule` to enable the routing features in the application.
-
-```html
-<!-- Example usage of RouterLink in the template -->
-<a routerLink="/about">About</a>
-
-<!-- Example usage of RouterOutlet in the template -->
-<router-outlet></router-outlet>
-```
-
-The `routerLink` directive is used to define links to different routes, and the `router-outlet` directive is used to define the location where the routed components will be displayed.
-
 ## HttpClientModule in Angular:
 
 The `HttpClientModule` is a built-in Angular module that provides a simplified client HTTP API for Angular applications. It is used to make HTTP requests to a server and handle the responses.
 
 To use the `HttpClientModule`, you need to import it into the root module of the application (e.g., `AppModule`) and add it to the `imports` array.
-
-```typescript
-// Example usage of HttpClientModule in Angular
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-
-import { AppComponent } from './app.component';
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-```
 
 Once the `HttpClientModule` is imported, you can inject the `HttpClient` service into components or services to make HTTP requests.
 
@@ -529,7 +410,7 @@ In the example above, the `DataService` is injected into the `AppComponent` to m
 - **ng new <project-name>:**
   Creates a new Angular project.
 - **ng serve:**
-  Builds and serves the application, watching for file changes.
+  Builds (compile / transpile) and serves the application, watching for file changes and automatically rebuilds the apps when source is updated (hot reload).
 - **ng generate module <module-name>:**
   Generates a new module.
 - **ng generate component <component-name>:**
@@ -583,3 +464,8 @@ npm install --save @angular/material @angular/cdk @angular/animations
 ```
 
 After installing Angular Material, you can import the required modules and components in your Angular application and start using them to build your UI.
+
+# Other Resources
+
+- [Angular Documentation](https://angular.io/docs)
+- [Architecture Overview](https://v2.angular.io/docs/ts/latest/guide/architecture.html#)
