@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SalesPerson} from "./sales-person";
+import {SalesPerson} from "../model/sales-person";
 import {SalesPersonServiceService} from "../service/sales-person-service.service";
 
 @Component({
@@ -9,8 +9,8 @@ import {SalesPersonServiceService} from "../service/sales-person-service.service
 })
 export class SalesPersonListComponent implements OnInit{
 
-    // create an array of objects
     salesPersonList: SalesPerson[] = [];
+    errorMessage: string = '';
 
     // create an instance of the SalesPersonServiceService class and inject it into the constructor
     constructor(private salesPersonService: SalesPersonServiceService) {
@@ -18,9 +18,15 @@ export class SalesPersonListComponent implements OnInit{
 
     // a lifecycle hook in Angular that is called after the constructor is called and after the component's inputs have been initialized. It is used to perform any additional initialization that is required for the component. ngOnInit is commonly used to call services or to set up subscriptions.
     ngOnInit() {
-        this.salesPersonService.getSalesPersonList().subscribe( // call the getSalesPersonList() method of the SalesPersonServiceService class and subscribe to the Observable that is returned.
-            data => this.salesPersonList = data // the data returned from the Observable is assigned to the salesPersonList array.
-        );
+        // call the getSalesPersonList() method of the SalesPersonServiceService class and subscribe to the Observable that is returned.
+        this.salesPersonService.getSalesPersonList().subscribe({
+            next: (data : SalesPerson[]) => { // the next() method is called when the Observable emits a value. In this case, the value emitted is the list of sales persons.
+                this.salesPersonList = data
+            },
+            error: (err: string) => {
+                this.errorMessage = err;
+            }
+        });
     }
 
 }

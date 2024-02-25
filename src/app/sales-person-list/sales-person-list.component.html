@@ -1,4 +1,4 @@
-<div *ngIf="salesPersonList.length > 0; else noSalesStaff">
+<div *ngIf="salesPersonList.length > 0; else errors">
     <table class="table table-hover">
 
         <thead class="table-dark">
@@ -27,6 +27,7 @@
     </table>
 </div>
 
-<ng-template #noSalesStaff>
+<ng-template #errors>
     <h2>No Sales Staff to display</h2>
+    <p>{{errorMessage}}</p>
 </ng-template>
