@@ -435,6 +435,20 @@ After installing Bootstrap, add the path of the bootstrap.min.css file to the st
 
 This will include the Bootstrap styles in your Angular application.
 
+Bootstrap js can be added in the scripts array in the angular.json file.
+
+```json
+"scripts": [
+  "node_modules/bootstrap/dist/js/bootstrap.min.js"
+]
+```
+
+Another way to include Bootstrap in your Angular project, is to integrate it in your styles.css file.
+
+```css
+@import '~bootstrap/dist/css/bootstrap.min.css';
+```
+
 ## Angular Material:
 
 Angular Material is a UI component library for Angular applications that provides a set of high-quality UI components based on Google's Material Design specification. It includes components such as buttons, cards, menus, and more.
