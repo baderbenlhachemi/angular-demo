@@ -35,35 +35,158 @@ Then you launch the app by bootstrapping the root module. Angular takes over, pr
 
 ![overview2](https://github.com/baderbenlhachemi/angular-demo/assets/88034249/623d9732-9f91-48b1-925b-a8781970ef50)
 
-### 1. Component:
+### 1. Module:
 
-The primary entity in an Angular application, a component comprises a user interface (UI) view and a class that houses application logic and event handling.
+A collection of related components, directives, services, etc., helping organize and modularize an Angular application.
+
+Angular apps are modular and Angular has its own modularity system called Angular modules or NgModules.
+
+Every Angular app has at least one Angular module class, the root module, conventionally named `AppModule`.
+
+`@NgModule` is a decorator function that takes a single metadata object whose properties describe the module. The most important properties are:
+
+- **declarations:** the view classes that belong to this module. Angular has three kinds of view classes: components, directives, and pipes.
+
+- **exports:** the subset of declarations that should be visible and usable in the component templates of other modules.
+
+- **imports:** other modules whose exported classes are needed by component templates declared in this module.
+
+- **providers:** creators of services that this module contributes to the global collection of services; they become accessible in all parts of the app.
+
+-**bootstrap:** the main application view, called the root component, that hosts all other app views. Only the root module should set this `bootstrap` property.
+
+### 2. Component:
+
+Main player in an Angular application. Has two parts:
+1. View for user interface
+2. Class that contains application logic (what is does to support the view) / event handling for the view
+
+The class interacts with the view through an API of properties and methods.
 
 It serves as the orchestrator of communication between the Model and the View.
 
 In Angular, components are pivotal for managing the UI and application logic, handling user input, updating the model, and dynamically refreshing the view based on changes in the model.
 
-### 2. View Template:
+The @Component decorator takes a required configuration object with the information Angular needs to create and present the component and its view.
+
+Here are a few of the most useful @Component configuration options:
+
+- **selector:** CSS selector that identifies this component in a template and triggers instantiation of the component where it finds the selector tag in the HTML.
+- **templateUrl:** module-relative address of this component's HTML template.
+- **styleUrls:** the inline CSS styles for the view
+- **providers:** array of dependency injection providers for services that the component requires. This is also where you would provide services that are unique to the component, as opposed to being provided in the application root.
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+  providers: [ExampleService]
+})
+export class AppComponent {
+  title = 'app';
+}
+```
+
+### 3. View Template:
 
 Represents the user interface (UI) for the component, created using Angular templates. It is responsible for presenting dynamic content to the user.
 
 In Angular, views utilize templates, which combine HTML with Angular-specific syntax to feature static HTML with dynamic elements updated based on data and events.
 
-### 3. Directive:
+### 4. Metadata:
+
+Metadata tells Angular how to process a class.
+
+In TypeScript, you attach metadata by using a **decorator**. A **decorator** is a function that adds metadata to a class, its members, or its method arguments.
+
+Provides additional information about the component, such as its selector, template, styles, and other configuration options.
+
+### 5. Data Binding:
+
+A mechanism for coordinating the parts of a template with the parts of a component.
+
+Facilitates the synchronization of data between the model (application data) and the view (UI), enabling automatic updates to the view based on changes in the model.
+
+Angular supports various types of data binding, including one-way and two-way data binding, enabling seamless communication between the model and the view.
+
+### 6. Directive:
 
 Adds custom behavior to HTML elements, used for tasks such as looping, conditionals, and other dynamic functionalities.
 
-### 4. Service:
+In Angular, directives are used to extend the functionality of HTML elements, enabling the creation of custom HTML tags and attributes that can be used to manipulate the DOM and add interactivity to the user interface.
+
+Angular provides built-in directives such as ngFor, ngIf, and ngSwitch, as well as the ability to create custom directives to suit specific application requirements.
+
+- **ngFor:** A structural directive that repeats a portion of HTML for each item in an iterable list.
+- **ngIf:** A structural directive that conditionally includes a portion of HTML based on the evaluation of an expression.
+- **ngSwitch:** A structural directive that conditionally switches among multiple views based on the evaluation of an expression.
+- **ngClass:** A directive that dynamically adds or removes CSS classes based on the evaluation of an expression.
+- 
+```html
+<!-- Example usage of ngFor in the template -->
+<ul>
+  <li *ngFor="let item of items">{{ item }}</li>
+</ul>
+
+<!-- Example usage of ngIf in the template -->
+<div *ngIf="condition">Content to show when condition is true</div>
+
+<!-- Example usage of ngSwitch in the template -->
+<div [ngSwitch]="value">
+  <div *ngSwitchCase="'case1'">Content for case 1</div>
+  <div *ngSwitchCase="'case2'">Content for case 2</div>
+  <div *ngSwitchDefault>Default content</div>
+</div>
+
+<!-- Example usage of ngClass in the template -->
+<div [ngClass]="{ 'class1': condition1, 'class2': condition2 }">Content with dynamic classes</div>
+```
+
+### 7. Service:
 
 A utility class offering specific functionality, such as data retrieval and management from a server, performing calculations, or handling validation.
 
 In the context of an Angular application, services play a key role in representing the application's data and business logic.
 
-These services, often implemented as TypeScript classes, manage data and enforce business rules.
+These services, often implemented as TypeScript classes, manage data and enforce business rules. They can be injected into components, directives, and other services, providing a way to share data and functionality across different parts of the application.
 
-### 5. Module:
+### 8. Dependency Injection:
 
-A collection of related components, directives, services, etc., helping organize and modularize an Angular application.
+A design pattern used to manage the dependencies of an application, allowing the creation of loosely coupled components and services.
+
+Dependency injection is a way to supply a new instance of a class with the fully-formed dependencies it requires. Most dependencies are services. Angular uses dependency injection to provide new components with the services they need.
+
+### 9. Router:
+
+Facilitates navigation between different views or pages in a single-page application (SPA).
+
+Angular's built-in router module provides a way to define routes and associate them with specific components, enabling seamless navigation between different parts of the application.
+
+### 10. Pipes:
+
+Pipes are used in templates to improve the user experience by transforming values for display.
+
+Angular provides a set of built-in pipes for common data transformations, such as date formatting, currency formatting, and string manipulation.
+
+### 11. Lifecycle Hooks:
+
+Angular provides a set of lifecycle hooks that allow you to tap into key moments in the lifetime of a component, from its creation to its destruction, by implementing the lifecycle hook interfaces.
+
+These hooks provide visibility into the component's lifecycle and allow you to perform operations at specific points in the component's lifecycle.
+
+- **ngOnChanges:** Called before ngOnInit and whenever one or more data-bound input properties change.
+- **ngOnInit:** Called once, after the first ngOnChanges.
+- **ngDoCheck:** Called immediately after ngOnChanges and ngOnInit on every change detection run, and immediately after ngOnInit on the first run.
+- **ngAfterContentInit:** Called once after the first ngDoCheck.
+- **ngAfterContentChecked:** Called after ngAfterContentInit and every subsequent ngDoCheck.
+- **ngAfterViewInit:** Called once after the first ngAfterContentChecked.
+- **ngAfterViewChecked:** Called after ngAfterViewInit and every subsequent ngAfterContentChecked.
+- **ngOnDestroy:** Called immediately before the directive is destroyed.
+- **ngOnDetach:** Called immediately before the directive is detached from its parent.
+- **ngOnAttach:** Called immediately after the directive is attached to a new view.
 
 ## Component-Based Architecture:
 

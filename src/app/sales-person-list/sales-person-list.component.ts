@@ -9,7 +9,7 @@ import {SalesPersonServiceService} from "../service/sales-person-service.service
 })
 export class SalesPersonListComponent implements OnInit{
 
-    salesPersonList: SalesPerson[] = [];
+    salesPersonList: SalesPerson[] = []; // salesPersonList property that returns an array of SalesPerson objects
     errorMessage: string = '';
 
     // create an instance of the SalesPersonServiceService class and inject it into the constructor
