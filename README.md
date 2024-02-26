@@ -165,6 +165,19 @@ In the context of an Angular application, services play a key role in representi
 
 These services, often implemented as TypeScript classes, manage data and enforce business rules. They can be injected into components, directives, and other services, providing a way to share data and functionality across different parts of the application.
 
+```typescript
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ExampleService {
+  // Service logic goes here
+}
+```
+
+In the example above, the `@Injectable` decorator marks the class as a service that can be injected into other components or services. The `providedIn: 'root'` option registers the service with the root injector, making it available throughout the application.
+
 ### 8. Dependency Injection:
 
 A design pattern used to manage the dependencies of an application, allowing the creation of loosely coupled components and services.
